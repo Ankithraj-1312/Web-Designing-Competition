@@ -10,7 +10,7 @@ export default function Loader({ onComplete }) {
     // We will preload the first 60 frames of each sequence to make the transitions instant,
     // and load the rest progressively. For the loader, let's load all 240 frames of the garage sequence
     // so the intro is flawless.
-    const totalFrames = 120; // Preload first 120 frames of garage for faster startup
+    const totalFrames = 240; // Preload all 240 frames for 100% complete sequence playback
     let loadedCount = 0;
     const images = [];
 

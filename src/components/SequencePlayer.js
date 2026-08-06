@@ -24,7 +24,7 @@ export default function SequencePlayer({
   const [errorOccurred, setErrorOccurred] = useState(false);
 
   useEffect(() => {
-    const loadedImages = [];
+    const loadedImages = new Array(frameCount).fill(null);
     let loadedCount = 0;
 
     const preloadImages = () => {
@@ -34,19 +34,15 @@ export default function SequencePlayer({
         img.src = `${sequencePath}${frameNum}${extension}`;
         img.onload = () => {
           loadedCount++;
+          loadedImages[i - 1] = img;
           setLoadedPercent(Math.floor((loadedCount / frameCount) * 100));
-          if (loadedCount === frameCount) {
-            setImages(loadedImages);
-          }
+          // Expose loaded frames immediately to state
+          setImages([...loadedImages]);
         };
         img.onerror = () => {
           loadedCount++;
           setErrorOccurred(true);
-          if (loadedCount === frameCount) {
-            setImages(loadedImages);
-          }
         };
-        loadedImages.push(img);
       }
     };
 
@@ -55,8 +51,6 @@ export default function SequencePlayer({
   }, [frameCount, sequencePath, extension]);
 
   useEffect(() => {
-    if (images.length === 0) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -64,15 +58,24 @@ export default function SequencePlayer({
     const renderState = { frame: 0 };
 
     const resizeCanvas = () => {
-      // Fit the 1080x1920 portrait canvas into the parent container
-      // If we are on desktop, we can display it inside a centered box (cinematic view)
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
       drawFrame(renderState.frame);
     };
 
     const drawFrame = (index) => {
-      const img = images[index];
+      // Get exact frame or nearest available loaded frame
+      let img = images[index];
+      if (!img) {
+        for (let i = index - 1; i >= 0; i--) {
+          if (images[i]) { img = images[i]; break; }
+        }
+      }
+      if (!img) {
+        for (let i = index + 1; i < frameCount; i++) {
+          if (images[i]) { img = images[i]; break; }
+        }
+      }
       if (!img) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -104,45 +107,21 @@ export default function SequencePlayer({
       ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
     };
 
-    // Draw first frame
+    // Draw initial frame
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Adaptive performance tracking variables
-    let lastDrawTime = typeof window !== 'undefined' ? performance.now() : 0;
-    let lowPerformanceMode = false;
-    let slowDrawCount = 0;
-
-    // Scroll trigger mapping frame index
+    // Scroll trigger mapping frame index with instant response (no frame skipping)
     const st = ScrollTrigger.create({
       trigger: triggerRef.current || containerRef.current,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.1,
+      scrub: true, // Direct 1:1 instant scroll response for all 240 frames
       onUpdate: (self) => {
-        const now = performance.now();
-        const delta = now - lastDrawTime;
-        lastDrawTime = now;
-
-        // If time delta between scrolls is long (under 25 FPS), trigger low perf mode
-        if (delta > 40) {
-          slowDrawCount++;
-          if (slowDrawCount > 6) {
-            lowPerformanceMode = true;
-          }
-        } else {
-          slowDrawCount = Math.max(0, slowDrawCount - 1);
-        }
-
         const frameIndex = Math.min(
           frameCount - 1,
           Math.floor(self.progress * frameCount)
         );
-
-        // Under low-perf mode, skip rendering odd frames when scrolling rapidly
-        if (lowPerformanceMode && frameIndex % 2 !== 0 && frameIndex !== frameCount - 1) {
-          return;
-        }
 
         renderState.frame = frameIndex;
         drawFrame(frameIndex);
