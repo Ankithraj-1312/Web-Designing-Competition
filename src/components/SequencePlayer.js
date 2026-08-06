@@ -12,16 +12,16 @@ export default function SequencePlayer({
   extension = '.jpg',
   triggerRef,
   overlayText,
-  onProgressUpdate, // callback for custom animations (like gauge, speed, sound etc)
-  fallbackImage, // High-res background image fallback to eliminate black space
+  onProgressUpdate,
+  fallbackImage,
   children,
 }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [images, setImages] = useState([]);
+  const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
   const [loadedPercent, setLoadedPercent] = useState(0);
   const [startedLoading, setStartedLoading] = useState(true);
-  const [errorOccurred, setErrorOccurred] = useState(false);
 
   useEffect(() => {
     const loadedImages = new Array(frameCount).fill(null);
@@ -36,17 +36,14 @@ export default function SequencePlayer({
           loadedCount++;
           loadedImages[i - 1] = img;
           setLoadedPercent(Math.floor((loadedCount / frameCount) * 100));
-          // Expose loaded frames immediately to state
           setImages([...loadedImages]);
         };
         img.onerror = () => {
           loadedCount++;
-          setErrorOccurred(true);
         };
       }
     };
 
-    // Preload immediately on mount so frames are ready instantly
     preloadImages();
   }, [frameCount, sequencePath, extension]);
 
@@ -58,13 +55,20 @@ export default function SequencePlayer({
     const renderState = { frame: 0 };
 
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      const dpr = window.devicePixelRatio || 1;
+      const displayWidth = canvas.offsetWidth;
+      const displayHeight = canvas.offsetHeight;
+
+      canvas.width = displayWidth * dpr;
+      canvas.height = displayHeight * dpr;
+      
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
       drawFrame(renderState.frame);
     };
 
     const drawFrame = (index) => {
-      // Get exact frame or nearest available loaded frame
+      // Fallback to nearest loaded frame to eliminate black flash
       let img = images[index];
       if (!img) {
         for (let i = index - 1; i >= 0; i--) {
@@ -78,45 +82,45 @@ export default function SequencePlayer({
       }
       if (!img) return;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const displayWidth = canvas.offsetWidth;
+      const displayHeight = canvas.offsetHeight;
 
-      // Render with cover logic to fill the full screen edge-to-edge
+      ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+      // CONTAIN draw math (no cropping of vehicle)
       const imgWidth = img.width;
       const imgHeight = img.height;
-      const canvasWidth = canvas.width;
-      const canvasHeight = canvas.height;
-
       const imgRatio = imgWidth / imgHeight;
-      const canvasRatio = canvasWidth / canvasHeight;
+      const canvasRatio = displayWidth / displayHeight;
 
-      let drawWidth = canvasWidth;
-      let drawHeight = canvasHeight;
+      let drawWidth = displayWidth;
+      let drawHeight = displayHeight;
       let offsetX = 0;
       let offsetY = 0;
 
-      if (imgRatio > canvasRatio) {
-        // Image is wider than canvas
-        drawWidth = canvasHeight * imgRatio;
-        offsetX = (canvasWidth - drawWidth) / 2;
+      if (imgRatio < canvasRatio) {
+        drawHeight = displayHeight;
+        drawWidth = displayHeight * imgRatio;
+        offsetX = (displayWidth - drawWidth) / 2;
+        offsetY = 0;
       } else {
-        // Image is taller than canvas
-        drawHeight = canvasWidth / imgRatio;
-        offsetY = (canvasHeight - drawHeight) / 2;
+        drawWidth = displayWidth;
+        drawHeight = displayWidth / imgRatio;
+        offsetX = 0;
+        offsetY = (displayHeight - drawHeight) / 2;
       }
 
       ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
     };
 
-    // Draw initial frame
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Scroll trigger mapping frame index with instant response (no frame skipping)
     const st = ScrollTrigger.create({
       trigger: triggerRef.current || containerRef.current,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: true, // Direct 1:1 instant scroll response for all 240 frames
+      scrub: true,
       onUpdate: (self) => {
         const frameIndex = Math.min(
           frameCount - 1,
@@ -124,6 +128,7 @@ export default function SequencePlayer({
         );
 
         renderState.frame = frameIndex;
+        setCurrentFrameIndex(frameIndex);
         drawFrame(frameIndex);
         
         if (onProgressUpdate) {
@@ -138,9 +143,19 @@ export default function SequencePlayer({
     };
   }, [images, frameCount, triggerRef, onProgressUpdate]);
 
+  const activeAmbientBg = images[currentFrameIndex]?.src || fallbackImage;
+
   return (
     <div ref={containerRef} className="sequence-player-wrapper">
-      {images.length === 0 ? (
+      {/* Ambient Blur Layer matching current frame */}
+      {activeAmbientBg && (
+        <div 
+          className="ambient-blur-layer" 
+          style={{ backgroundImage: `url('${activeAmbientBg}')` }}
+        />
+      )}
+
+      {images.filter(Boolean).length === 0 ? (
         <div className="sequence-loading glass-panel">
           <div className="spinner"></div>
           <span className="tech-text">
@@ -150,7 +165,7 @@ export default function SequencePlayer({
       ) : null}
 
       <div className="cinematic-frame">
-        {fallbackImage && (
+        {fallbackImage && images.filter(Boolean).length === 0 && (
           <div 
             className="fallback-bg" 
             style={{ backgroundImage: `url('${fallbackImage}')` }}
@@ -186,6 +201,22 @@ export default function SequencePlayer({
           z-index: 2;
         }
 
+        .ambient-blur-layer {
+          position: absolute;
+          top: -15%;
+          left: -15%;
+          width: 130%;
+          height: 130%;
+          background-size: cover;
+          background-position: center;
+          filter: blur(50px) brightness(0.5) contrast(1.15);
+          transform: scale(1.15);
+          opacity: 0.8;
+          z-index: 1;
+          pointer-events: none;
+          transition: background-image 0.2s ease;
+        }
+
         .sequence-loading {
           position: absolute;
           z-index: 5;
@@ -207,11 +238,16 @@ export default function SequencePlayer({
 
         .cinematic-frame {
           position: relative;
-          width: 100%;
-          height: 100%;
-          border: none;
+          height: 86vh;
+          max-height: 880px;
+          aspect-ratio: 9 / 16;
+          max-width: 92vw;
+          border: 1px solid rgba(255, 90, 0, 0.35);
+          border-radius: 12px;
           background: #050505;
+          box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 90, 0, 0.15);
           overflow: hidden;
+          z-index: 2;
         }
 
         .fallback-bg {
@@ -237,21 +273,21 @@ export default function SequencePlayer({
         /* Telemetry frame details */
         .telemetry-corner {
           position: absolute;
-          width: 16px;
-          height: 16px;
+          width: 14px;
+          height: 14px;
           border: 2px solid var(--accent-orange);
           opacity: 0.8;
           z-index: 3;
         }
 
-        .tl { top: 40px; left: 4%; border-right: none; border-bottom: none; }
-        .tr { top: 40px; right: 4%; border-left: none; border-bottom: none; }
-        .bl { bottom: 40px; left: 4%; border-right: none; border-top: none; }
-        .br { bottom: 40px; right: 4%; border-left: none; border-top: none; }
+        .tl { top: 16px; left: 16px; border-right: none; border-bottom: none; }
+        .tr { top: 16px; right: 16px; border-left: none; border-bottom: none; }
+        .bl { bottom: 16px; left: 16px; border-right: none; border-top: none; }
+        .br { bottom: 16px; right: 16px; border-left: none; border-top: none; }
 
         .overlay-caption {
           position: absolute;
-          bottom: 40px;
+          bottom: 30px;
           left: 50%;
           transform: translateX(-50%);
           font-size: 0.75rem;

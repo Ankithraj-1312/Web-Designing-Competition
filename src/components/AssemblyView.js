@@ -136,7 +136,7 @@ export default function AssemblyView() {
         .assembly-scroll-container {
           position: relative;
           width: 100vw;
-          height: 300vh; /* Scroll length */
+          height: 180vh; /* Faster scroll track */
           background: #050505;
         }
 

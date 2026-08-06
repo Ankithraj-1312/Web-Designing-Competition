@@ -205,7 +205,7 @@ export default function TrackLaunch() {
         .track-launch-container {
           position: relative;
           width: 100vw;
-          height: 350vh; /* Scroll length */
+          height: 200vh; /* Faster scroll track */
           background: #050505;
         }
 
