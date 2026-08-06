@@ -1,0 +1,213 @@
+/* Luxury Automotive Theme - Custom Vanilla CSS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@400;700;900&family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --bg-primary: #050505;
+  --bg-secondary: #0c0c0c;
+  --accent-orange: #ff5a00;
+  --accent-orange-glow: rgba(255, 90, 0, 0.45);
+  --aluminum: #dcdcdc;
+  --carbon-dark: #121212;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --glass-bg: rgba(10, 10, 10, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --font-title: 'Montserrat', sans-serif;
+  --font-tech: 'Orbitron', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-orange);
+}
+
+/* Carbon Fiber Texture Background Utility */
+.carbon-pattern {
+  background-color: #0c0c0c;
+  background-image: 
+    linear-gradient(45deg, #151515 25%, transparent 25%, transparent 75%, #151515 75%, #151515), 
+    linear-gradient(45deg, #151515 25%, transparent 25%, transparent 75%, #151515 75%, #151515);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+}
+
+/* Glassmorphism Cards styling */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-glow);
+  border-radius: 12px;
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 90, 0, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(255, 90, 0, 0.05);
+  transition: all 0.4s ease;
+}
+
+/* Typography styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  letter-spacing: -0.02em;
+}
+
+.tech-text {
+  font-family: var(--font-tech);
+  letter-spacing: 0.1em;
+}
+
+/* Layout utilities */
+.story-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 4rem 2rem;
+}
+
+/* Fixed Canvas container for scroll playbacks */
+.canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sequence-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay for styling/vignette on the canvas */
+.vignette-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.85) 90%),
+              linear-gradient(to bottom, rgba(5, 5, 5, 0.4) 0%, transparent 15%, transparent 85%, rgba(5, 5, 5, 0.9) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Text Orange highlight */
+.orange-glow-text {
+  color: var(--accent-orange);
+  text-shadow: 0 0 12px var(--accent-orange-glow);
+}
+
+.orange-glow-btn {
+  background: transparent;
+  border: 1px solid var(--accent-orange);
+  color: #fff;
+  padding: 12px 28px;
+  font-family: var(--font-tech);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.orange-glow-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 90, 0, 0.3), transparent);
+  transition: all 0.5s ease;
+}
+
+.orange-glow-btn:hover {
+  background-color: var(--accent-orange);
+  box-shadow: 0 0 20px var(--accent-orange-glow);
+  text-shadow: 0 0 4px #000;
+  transform: translateY(-2px);
+}
+
+.orange-glow-btn:hover::before {
+  left: 100%;
+}
+
+.orange-glow-btn:active {
+  transform: translateY(0);
+}
+
+/* Main UI wrappers */
+.ui-overlay {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1200px;
+  pointer-events: auto;
+}
+
+/* Lenis scroll classes */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
