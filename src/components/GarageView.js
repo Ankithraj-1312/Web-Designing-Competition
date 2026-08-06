@@ -27,6 +27,7 @@ export default function GarageView() {
           frameCount={240}
           sequencePath="/sequences/garage/ezgif-frame-"
           triggerRef={containerRef}
+          fallbackImage="/images/A_McLaren_P1_GTR_parked_inside_1.jpg"
           overlayText={getSubtext()}
           onProgressUpdate={handleProgress}
         >

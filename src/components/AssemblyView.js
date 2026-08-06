@@ -62,6 +62,7 @@ export default function AssemblyView() {
             frameCount={240}
             sequencePath="/sequences/assembly/ezgif-frame-"
             triggerRef={containerRef}
+            fallbackImage="/images/A_perfectly_exploded_McLaren_P_1.jpg"
             overlayText={getSubtext()}
             onProgressUpdate={handleProgress}
           />

@@ -13,13 +13,14 @@ export default function SequencePlayer({
   triggerRef,
   overlayText,
   onProgressUpdate, // callback for custom animations (like gauge, speed, sound etc)
+  fallbackImage, // High-res background image fallback to eliminate black space
   children,
 }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [images, setImages] = useState([]);
   const [loadedPercent, setLoadedPercent] = useState(0);
-  const [startedLoading, setStartedLoading] = useState(false);
+  const [startedLoading, setStartedLoading] = useState(true);
   const [errorOccurred, setErrorOccurred] = useState(false);
 
   useEffect(() => {
@@ -49,21 +50,9 @@ export default function SequencePlayer({
       }
     };
 
-    // ScrollTrigger to trigger background preloading well before user arrives
-    const preloadTrigger = ScrollTrigger.create({
-      trigger: triggerRef.current || containerRef.current,
-      start: 'top bottom+=500%', // Start loading very early — 5 screens away
-      once: true,
-      onEnter: () => {
-        setStartedLoading(true);
-        preloadImages();
-      }
-    });
-
-    return () => {
-      preloadTrigger.kill();
-    };
-  }, [frameCount, sequencePath, extension, triggerRef]);
+    // Preload immediately on mount so frames are ready instantly
+    preloadImages();
+  }, [frameCount, sequencePath, extension]);
 
   useEffect(() => {
     if (images.length === 0) return;
@@ -182,6 +171,12 @@ export default function SequencePlayer({
       ) : null}
 
       <div className="cinematic-frame">
+        {fallbackImage && (
+          <div 
+            className="fallback-bg" 
+            style={{ backgroundImage: `url('${fallbackImage}')` }}
+          />
+        )}
         <canvas ref={canvasRef} className="player-canvas" />
         <div className="telemetry-corner tl"></div>
         <div className="telemetry-corner tr"></div>
@@ -189,7 +184,7 @@ export default function SequencePlayer({
         <div className="telemetry-corner br"></div>
       </div>
 
-      {overlayText && images.length > 0 && (
+      {overlayText && (
         <div className="overlay-caption tech-text">
           {overlayText}
         </div>
@@ -236,11 +231,25 @@ export default function SequencePlayer({
           width: 100%;
           height: 100%;
           border: none;
-          background: #000;
+          background: #050505;
           overflow: hidden;
         }
 
+        .fallback-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          background-position: center;
+          filter: brightness(0.8) contrast(1.1);
+          z-index: 0;
+        }
+
         .player-canvas {
+          position: relative;
+          z-index: 1;
           width: 100%;
           height: 100%;
           display: block;

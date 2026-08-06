@@ -198,8 +198,8 @@ export default function HeroHeadlights() {
           height: 100%;
           background-size: cover;
           background-position: center;
-          opacity: 0;
-          filter: brightness(0.2) contrast(1.5) blur(1px);
+          opacity: 0.55;
+          filter: brightness(0.6) contrast(1.2);
           transition: opacity 1.5s ease;
           z-index: 1;
         }

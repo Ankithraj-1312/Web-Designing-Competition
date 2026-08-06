@@ -27,6 +27,7 @@ export default function RolloutView() {
           frameCount={240}
           sequencePath="/sequences/rolls_out/ezgif-frame-"
           triggerRef={containerRef}
+          fallbackImage="/images/A_McLaren_P1_GTR_parked_beneat_1.jpg"
           overlayText={getOverlayText()}
           onProgressUpdate={handleProgress}
         >
