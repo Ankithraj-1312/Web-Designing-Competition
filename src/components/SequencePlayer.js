@@ -149,11 +149,13 @@ export default function SequencePlayer({
     <div ref={containerRef} className="sequence-player-wrapper">
       {/* Ambient Blur Layer matching current frame */}
       {activeAmbientBg && (
-        <div 
-          className="ambient-blur-layer" 
+        <div
+          className="ambient-blur-layer"
           style={{ backgroundImage: `url('${activeAmbientBg}')` }}
         />
       )}
+      {/* Guarantees a warm glow floor even when the current frame is a dark close-up */}
+      <div className="ambient-glow-floor" />
 
       {images.filter(Boolean).length === 0 ? (
         <div className="sequence-loading glass-panel">
@@ -196,25 +198,40 @@ export default function SequencePlayer({
           display: flex;
           justify-content: center;
           align-items: center;
-          background: #050505;
+          background:
+            radial-gradient(circle at 50% 45%, rgba(255, 90, 0, 0.10), transparent 60%),
+            radial-gradient(ellipse at center, #181818 0%, #050505 75%);
           overflow: hidden;
           z-index: 2;
         }
 
         .ambient-blur-layer {
           position: absolute;
-          top: -15%;
-          left: -15%;
-          width: 130%;
-          height: 130%;
+          top: -20%;
+          left: -20%;
+          width: 140%;
+          height: 140%;
           background-size: cover;
           background-position: center;
-          filter: blur(50px) brightness(0.5) contrast(1.15);
-          transform: scale(1.15);
-          opacity: 0.8;
+          filter: blur(38px) brightness(0.9) contrast(1.15) saturate(1.3);
+          transform: scale(1.3);
+          opacity: 1;
           z-index: 1;
           pointer-events: none;
           transition: background-image 0.2s ease;
+        }
+
+        /* Screen-blended glow so dark/macro frames never blur down to flat black */
+        .ambient-glow-floor {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle at 50% 42%, rgba(255, 120, 40, 0.35) 0%, rgba(120, 50, 15, 0.28) 40%, rgba(30, 18, 12, 0.35) 75%, rgba(15, 10, 8, 0.45) 100%);
+          mix-blend-mode: screen;
+          z-index: 1;
+          pointer-events: none;
         }
 
         .sequence-loading {
@@ -238,10 +255,10 @@ export default function SequencePlayer({
 
         .cinematic-frame {
           position: relative;
-          height: 86vh;
-          max-height: 880px;
+          height: 94vh;
+          max-height: 960px;
           aspect-ratio: 9 / 16;
-          max-width: 92vw;
+          max-width: 97vw;
           border: 1px solid rgba(255, 90, 0, 0.35);
           border-radius: 12px;
           background: #050505;

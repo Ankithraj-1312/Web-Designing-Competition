@@ -30,7 +30,10 @@ html, body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-body);
-  overflow-x: hidden;
+  /* overflow-x: hidden here would silently promote overflow-y to `auto`
+     (CSS overflow spec), which breaks position: sticky for every scroll-pinned
+     section on the page. `clip` blocks horizontal scroll without that side effect. */
+  overflow-x: clip;
   width: 100%;
 }
 
@@ -107,8 +110,8 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.65) 95%),
-              linear-gradient(to bottom, rgba(5, 5, 5, 0.2) 0%, transparent 15%, transparent 85%, rgba(5, 5, 5, 0.7) 100%);
+  background: radial-gradient(circle, transparent 55%, rgba(0, 0, 0, 0.4) 100%),
+              linear-gradient(to bottom, rgba(5, 5, 5, 0.15) 0%, transparent 15%, transparent 85%, rgba(5, 5, 5, 0.5) 100%);
   pointer-events: none;
   z-index: 2;
 }
