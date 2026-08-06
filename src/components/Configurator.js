@@ -32,7 +32,7 @@ export default function Configurator() {
   const [activeLighting, setActiveLighting] = useState(lightingModes[0]);
 
   return (
-    <div className="configurator-section story-section">
+    <div id="configurator" className="configurator-section story-section">
       <div className="config-grid">
         {/* Left Side: Dynamic Canvas/Image Showcase */}
         <div className="showcase-container">
@@ -354,7 +354,16 @@ export default function Configurator() {
             grid-template-columns: 1fr;
           }
           .configurator-viewport {
-            height: 380px;
+            height: 340px;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .configurator-section {
+            padding: 2rem 1rem;
+          }
+          .configurator-viewport {
+            height: 240px;
           }
         }
       `}</style>

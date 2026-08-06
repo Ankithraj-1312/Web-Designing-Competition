@@ -37,8 +37,10 @@ export default function NavBar() {
           <li><a href="#garage" className="link-hover">GARAGE</a></li>
           <li><a href="#design" className="link-hover">DESIGN</a></li>
           <li><a href="#engineering" className="link-hover">ENGINEERING</a></li>
+          <li><a href="#configurator" className="link-hover">CONFIG</a></li>
           <li><a href="#cockpit" className="link-hover">COCKPIT</a></li>
-          <li><a href="#performance" className="link-hover">PERFORMANCE</a></li>
+          <li><a href="#aerodynamics" className="link-hover">AERO</a></li>
+          <li><a href="#performance" className="link-hover">SPECS</a></li>
           <li><a href="#gallery" className="link-hover">GALLERY</a></li>
         </ul>
 

@@ -163,6 +163,25 @@ export default function SoundManager() {
     }
   }, [muted]);
 
+  // Auto-resume AudioContext on first user interaction (click, scroll, keydown)
+  useEffect(() => {
+    const resumeAudioOnGesture = () => {
+      if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+        audioCtxRef.current.resume();
+      }
+    };
+
+    window.addEventListener('click', resumeAudioOnGesture, { passive: true });
+    window.addEventListener('scroll', resumeAudioOnGesture, { passive: true });
+    window.addEventListener('keydown', resumeAudioOnGesture, { passive: true });
+
+    return () => {
+      window.removeEventListener('click', resumeAudioOnGesture);
+      window.removeEventListener('scroll', resumeAudioOnGesture);
+      window.removeEventListener('keydown', resumeAudioOnGesture);
+    };
+  }, []);
+
   const toggleMute = () => {
     // Resume context if suspended (browser security)
     if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {

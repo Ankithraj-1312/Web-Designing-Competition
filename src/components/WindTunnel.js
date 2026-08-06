@@ -20,8 +20,10 @@ export default function WindTunnel() {
     let particles = [];
 
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.scale(dpr, dpr);
     };
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
@@ -135,7 +137,7 @@ export default function WindTunnel() {
   }, [windSpeed, drsActive]);
 
   return (
-    <div ref={containerRef} className="wind-tunnel-section">
+    <div id="aerodynamics" ref={containerRef} className="wind-tunnel-section">
       <div className="sticky-content">
         
         {/* Background Car Profile */}
