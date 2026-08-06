@@ -49,10 +49,10 @@ export default function SequencePlayer({
       }
     };
 
-    // ScrollTrigger to trigger background preloading when user is near
+    // ScrollTrigger to trigger background preloading well before user arrives
     const preloadTrigger = ScrollTrigger.create({
       trigger: triggerRef.current || containerRef.current,
-      start: 'top bottom+=150%', // Start loading when section is 1.5 screens below viewport
+      start: 'top bottom+=500%', // Start loading very early — 5 screens away
       once: true,
       onEnter: () => {
         setStartedLoading(true);
@@ -129,7 +129,7 @@ export default function SequencePlayer({
       trigger: triggerRef.current || containerRef.current,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.5,
+      scrub: 0.1,
       onUpdate: (self) => {
         const now = performance.now();
         const delta = now - lastDrawTime;

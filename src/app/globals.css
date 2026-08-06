@@ -96,7 +96,8 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  padding: 4rem 2rem;
+  padding: 0; /* NO padding — eliminates black gaps between sections */
+  margin: 0;
 }
 
 /* Fixed Canvas container for scroll playbacks */
