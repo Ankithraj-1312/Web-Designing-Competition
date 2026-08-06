@@ -1,4 +1,4 @@
-# 🚗 McLaren P1 GTR – Interactive 3D Automotive Experience
+# 🚗 McLaren P1 GTR – Interactive 3D  Automotive Experience
 
 ![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge\&logo=next.js)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge\&logo=react)
