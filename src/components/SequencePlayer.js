@@ -233,20 +233,11 @@ export default function SequencePlayer({
 
         .cinematic-frame {
           position: relative;
-          width: 92vw;
-          height: 88vh;
-          max-width: 440px;
-          max-height: 780px;
-          border: 1px solid var(--glass-border);
+          width: 100%;
+          height: 100%;
+          border: none;
           background: #000;
-          box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 90, 0, 0.03);
-          border-radius: 12px;
           overflow: hidden;
-          transition: border-color 0.5s ease;
-        }
-
-        .cinematic-frame:hover {
-          border-color: rgba(255, 90, 0, 0.2);
         }
 
         .player-canvas {
@@ -258,28 +249,28 @@ export default function SequencePlayer({
         /* Telemetry frame details */
         .telemetry-corner {
           position: absolute;
-          width: 10px;
-          height: 10px;
+          width: 12px;
+          height: 12px;
           border: 2px solid var(--accent-orange);
-          opacity: 0.5;
+          opacity: 0.65;
         }
 
-        .tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
-        .tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
-        .bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
-        .br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+        .tl { top: 40px; left: 4%; border-right: none; border-bottom: none; }
+        .tr { top: 40px; right: 4%; border-left: none; border-bottom: none; }
+        .bl { bottom: 40px; left: 4%; border-right: none; border-top: none; }
+        .br { bottom: 40px; right: 4%; border-left: none; border-top: none; }
 
         .overlay-caption {
           position: absolute;
-          bottom: 8%;
+          bottom: 40px;
           left: 50%;
           transform: translateX(-50%);
           font-size: 0.75rem;
           color: var(--accent-orange);
           letter-spacing: 0.15em;
           text-shadow: 0 0 8px rgba(255, 90, 0, 0.5);
-          background: rgba(0,0,0,0.7);
-          padding: 6px 16px;
+          background: rgba(0,0,0,0.85);
+          padding: 8px 20px;
           border-radius: 4px;
           border: 1px solid var(--glass-border);
           z-index: 3;
@@ -287,14 +278,6 @@ export default function SequencePlayer({
 
         @keyframes spin {
           to { transform: rotate(360deg); }
-        }
-
-        /* Responsive scaling */
-        @media (min-width: 1024px) {
-          .cinematic-frame {
-            max-width: 500px;
-            max-height: 820px;
-          }
         }
       `}</style>
     </div>

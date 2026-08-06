@@ -63,7 +63,7 @@ export default function StatsView() {
   }, []);
 
   return (
-    <div ref={containerRef} className="stats-section story-section">
+    <div id="performance" ref={containerRef} className="stats-section story-section">
       <div className="section-header">
         <h3 className="tech-text orange-glow-text">{"// HYBRID_PERFORMANCE"}</h3>
         <h2>SPECIFICATION TELEMETRY</h2>

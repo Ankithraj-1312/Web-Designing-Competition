@@ -20,7 +20,7 @@ export default function FinalCTA() {
   };
 
   return (
-    <div className="final-cta-section story-section">
+    <div id="configure" className="final-cta-section story-section">
       {/* Background Hero */}
       <div 
         className="cta-bg"
@@ -31,24 +31,52 @@ export default function FinalCTA() {
       <div className="light-glow"></div>
 
       <div className="ui-overlay cta-content">
-        <h3 className="tech-text orange-glow-text">{"// ENTER_THE_EXPERIENCE"}</h3>
+        <h3 className="tech-text orange-glow-text">{"// ESTABLISH_SPECIFICATION"}</h3>
         <h1>MCLAREN P1 GTR</h1>
-        <p>A hybrid powertrain generating 986 BHP. Track-exclusive performance refined for the ultimate driver.</p>
+        <p className="cta-description">
+          A hybrid powertrain generating 986 BHP. Track-exclusive performance refined for the ultimate driver.
+        </p>
+
+        {/* Spec telemetry grid */}
+        <div className="cta-specs-grid tech-text">
+          <div className="cta-spec-item">
+            <span className="spec-val orange-glow-text">986 BHP</span>
+            <span className="spec-lbl">TOTAL POWER</span>
+          </div>
+          <div className="cta-spec-item">
+            <span className="spec-val">2.8 S</span>
+            <span className="spec-lbl">0 - 100 KM/H</span>
+          </div>
+          <div className="cta-spec-item">
+            <span className="spec-val">350+</span>
+            <span className="spec-lbl">TOP SPEED KM/H</span>
+          </div>
+          <div className="cta-spec-item">
+            <span className="spec-val">1,440 KG</span>
+            <span className="spec-lbl">LIGHTWEIGHT DRY</span>
+          </div>
+        </div>
         
-        <button 
-          ref={ctaBtnRef}
-          className="orange-glow-btn cta-btn"
-          onClick={handleCTA}
-        >
-          EXPERIENCE PERFORMANCE
-        </button>
+        <div className="cta-button-row">
+          <button 
+            ref={ctaBtnRef}
+            className="orange-glow-btn cta-btn"
+            onClick={handleCTA}
+          >
+            EXPERIENCE PERFORMANCE
+          </button>
+          
+          <a href="#intro" className="outline-btn tech-text">
+            RETURN TO INTRO
+          </a>
+        </div>
       </div>
 
       {/* Footer copyright telemetry */}
       <div className="footer-bar tech-text">
         <span>© 2026 MCLAREN AUTOMOTIVE CORP</span>
-        <span>GEOMETRY: 140K POLYGONS</span>
-        <span>LATENCY: 8MS</span>
+        <span>SYSTEM VERSION: V1.1.2-STABLE</span>
+        <span>TELEMETRY: LINK ENCRYPTED</span>
       </div>
 
       <div className="vignette-overlay" />
@@ -114,16 +142,73 @@ export default function FinalCTA() {
           text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
         }
 
-        .cta-content p {
+        .cta-description {
           font-size: 0.85rem;
           color: #888;
           line-height: 1.6;
-          margin-bottom: 1rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .cta-specs-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 2.5rem;
+          margin: 1rem 0 2rem 0;
+          width: 100%;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          padding: 1.5rem 0;
+        }
+
+        .cta-spec-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.35rem;
+        }
+
+        .spec-val {
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: #fff;
+          letter-spacing: 0.05em;
+        }
+
+        .spec-lbl {
+          font-size: 0.55rem;
+          color: #666;
+          letter-spacing: 0.15em;
+        }
+
+        .cta-button-row {
+          display: flex;
+          gap: 1.5rem;
+          align-items: center;
         }
 
         .cta-btn {
-          font-size: 0.95rem !important;
-          padding: 14px 32px !important;
+          font-size: 0.8rem !important;
+          padding: 14px 30px !important;
+        }
+
+        .outline-btn {
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #aaa;
+          padding: 14px 30px;
+          font-size: 0.8rem;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          text-decoration: none;
+          border-radius: 4px;
+          transition: all 0.3s ease;
+        }
+
+        .outline-btn:hover {
+          color: #fff;
+          border-color: #fff;
+          background: rgba(255, 255, 255, 0.03);
+          transform: translateY(-2px);
         }
 
         .footer-bar {
@@ -147,10 +232,26 @@ export default function FinalCTA() {
           .cta-content h1 {
             font-size: 2.5rem;
           }
+          .cta-specs-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            width: 100%;
+          }
+          .cta-button-row {
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+          }
+          .cta-btn, .outline-btn {
+            width: 100%;
+            text-align: center;
+          }
           .footer-bar {
             flex-direction: column;
             gap: 0.5rem;
             align-items: center;
+            bottom: 15px;
           }
         }
       `}</style>

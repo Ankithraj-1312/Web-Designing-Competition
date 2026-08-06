@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import SoundManager from '@/components/SoundManager';
 import Loader from '@/components/Loader';
+import NavBar from '@/components/NavBar';
 import HeroHeadlights from '@/components/HeroHeadlights';
 import GarageView from '@/components/GarageView';
 import RolloutView from '@/components/RolloutView';
@@ -23,6 +24,7 @@ export default function Home() {
         <Loader onComplete={() => setIsLoaded(true)} />
       ) : (
         <main className="storytelling-container">
+          <NavBar />
           <SoundManager />
           <HeroHeadlights />
           <GarageView />

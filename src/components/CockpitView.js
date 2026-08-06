@@ -121,7 +121,7 @@ export default function CockpitView() {
   };
 
   return (
-    <div ref={containerRef} className="cockpit-scroll-container">
+    <div id="cockpit" ref={containerRef} className="cockpit-scroll-container">
       <div className="sticky-content">
         
         {/* Cockpit Background Render */}

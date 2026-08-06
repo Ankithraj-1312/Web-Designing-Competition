@@ -52,7 +52,7 @@ export default function AssemblyView() {
   };
 
   return (
-    <div ref={containerRef} className="assembly-scroll-container">
+    <div id="engineering" ref={containerRef} className="assembly-scroll-container">
       <div className="sticky-content">
         
         {/* Toggle X-Ray Overlay or Normal Sequence */}
@@ -153,15 +153,11 @@ export default function AssemblyView() {
         }
 
         .xray-image {
-          width: 92vw;
-          height: 88vh;
-          max-width: 440px;
-          max-height: 780px;
-          border-radius: 12px;
+          width: 100%;
+          height: 100%;
+          border: none;
           background-size: cover;
           background-position: center;
-          border: 1px solid var(--accent-orange);
-          box-shadow: 0 0 40px rgba(255, 90, 0, 0.15);
           filter: contrast(1.1) brightness(0.9);
           position: relative;
         }
@@ -169,10 +165,8 @@ export default function AssemblyView() {
         /* Hotspots */
         .hotspots-overlay {
           position: absolute;
-          width: 92vw;
-          height: 88vh;
-          max-width: 440px;
-          max-height: 780px;
+          width: 100%;
+          height: 100%;
           z-index: 4;
         }
 

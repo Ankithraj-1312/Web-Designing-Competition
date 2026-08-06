@@ -20,7 +20,7 @@ export default function RolloutView() {
   };
 
   return (
-    <div ref={containerRef} className="rollout-scroll-container">
+    <div id="design" ref={containerRef} className="rollout-scroll-container">
       <div className="sticky-content">
         <SequencePlayer
           id="rollout"

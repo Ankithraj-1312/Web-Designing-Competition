@@ -9,7 +9,12 @@ const galleryImages = [
   { id: 1, src: '/images/A_McLaren_P1_GTR_parked_beneat_1.jpg', title: 'NIGHT RACING GRID', desc: 'Ambient wet reflections on racing tarmac.' },
   { id: 2, src: '/images/A_McLaren_P1_GTR_inside_a_futu_1.jpg', title: 'HYPER-FLOW TUNNEL', desc: 'Volumetric mist stream aerodynamics calibration.' },
   { id: 3, src: '/images/A_McLaren_P1_GTR_parked_inside_1.jpg', title: 'THE CARBON LAIR', desc: 'Parked inside the carbon fiber chassis laboratory.' },
-  { id: 4, src: '/images/A_futuristic_McLaren-inspired__3.jpg', title: 'MONOCELL SILHOUETTE', desc: 'Backlit signature curves and orange accent styling.' }
+  { id: 4, src: '/images/A_futuristic_McLaren-inspired__3.jpg', title: 'MONOCELL SILHOUETTE', desc: 'Backlit signature curves and orange accent styling.' },
+  { id: 5, src: '/images/A_perfectly_exploded_McLaren_P_1.jpg', title: 'EXPLODED ENGINEERING', desc: 'Fitted components floating in mechanical alignment.' },
+  { id: 6, src: '/images/A_premium_luxury_loading_scree_5.jpg', title: 'FUEL PRESSURE SYSTEMS', desc: 'Premium telemetry cluster indicators active.' },
+  { id: 7, src: '/images/A_transparent_McLaren_P1_GTR_s_2.jpg', title: 'TRANSPARENT X-RAY', desc: 'Exposing structural carbon composite weaves.' },
+  { id: 8, src: '/images/Luxury_McLaren_P1_GTR_cockpit__2.jpg', title: 'PILOT HANGAR STATION', desc: 'F1 racing steering controls and customized carbon dials.' },
+  { id: 9, src: '/images/Ultra_realistic_futuristic_McL_2.jpg', title: 'TRACK REVELATION', desc: 'Sunlight piercing morning fog on final straight.' }
 ];
 
 export default function GalleryView() {
@@ -75,7 +80,7 @@ export default function GalleryView() {
   };
 
   return (
-    <div ref={containerRef} className="gallery-section story-section">
+    <div id="gallery" ref={containerRef} className="gallery-section story-section">
       <div className="section-header">
         <h3 className="tech-text orange-glow-text">{"//bespoke_renders"}</h3>
         <h2>CINEMATIC EXHIBITION</h2>
@@ -144,10 +149,10 @@ export default function GalleryView() {
 
         .gallery-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 3rem;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
           width: 100%;
-          max-width: 1200px;
+          max-width: 1400px;
         }
 
         /* Gallery Cards styling */
@@ -202,6 +207,13 @@ export default function GalleryView() {
           font-size: 0.7rem;
           color: #888;
           line-height: 1.4;
+        }
+
+        @media (max-width: 1024px) {
+          .gallery-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+          }
         }
 
         @media (max-width: 768px) {

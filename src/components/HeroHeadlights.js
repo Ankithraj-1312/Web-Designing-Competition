@@ -139,7 +139,7 @@ export default function HeroHeadlights() {
   }, [ignited]);
 
   return (
-    <div ref={containerRef} className="headlights-section">
+    <div id="intro" ref={containerRef} className="headlights-section">
       {/* Background Silhouette */}
       <div 
         ref={carSilhouetteRef} 
@@ -171,9 +171,10 @@ export default function HeroHeadlights() {
 
       {/* Cinematic Copy */}
       <div ref={textRef} className="intro-text-wrapper">
-        <h2 className="tech-text orange-glow-text">HYBRID SYSTEM ACTIVE</h2>
-        <h1>CUT THROUGH THE DARKNESS</h1>
-        <p>SCROLL TO IGNITE PERFORMANCE</p>
+        <h2 className="tech-text orange-glow-text">HYBRID SYSTEM: ONLINE</h2>
+        <h1>MCLAREN P1 GTR</h1>
+        <p className="spec-line tech-text">3.8L TWIN-TURBO V8 HYBRID // 986 BHP // TRACK ONLY</p>
+        <span className="scroll-indicator tech-text">SCROLL TO IGNITE VEHICLE STARTUP</span>
       </div>
 
       <style jsx>{`
@@ -331,11 +332,24 @@ export default function HeroHeadlights() {
           text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
         }
 
-        .intro-text-wrapper p {
-          font-size: 0.8rem;
+        .spec-line {
+          font-size: 0.85rem !important;
+          color: #aaa !important;
+          letter-spacing: 0.15em !important;
+          margin-top: 0.5rem;
+        }
+
+        .scroll-indicator {
+          font-size: 0.7rem;
           color: #666;
-          letter-spacing: 0.25em;
-          margin-top: 1rem;
+          letter-spacing: 0.2em;
+          margin-top: 1.5rem;
+          animation: blink 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes blink {
+          0% { opacity: 0.3; }
+          100% { opacity: 1; }
         }
 
         @media (max-width: 768px) {

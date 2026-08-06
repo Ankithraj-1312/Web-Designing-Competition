@@ -20,7 +20,7 @@ export default function GarageView() {
   };
 
   return (
-    <div ref={containerRef} className="garage-scroll-container">
+    <div id="garage" ref={containerRef} className="garage-scroll-container">
       <div className="sticky-content">
         <SequencePlayer
           id="garage"
